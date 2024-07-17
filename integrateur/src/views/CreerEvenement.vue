@@ -87,7 +87,6 @@
   
   function submitForm() {
     console.log('Événement créé:', event.value);
-    // Here, you would typically send the event data to your server or store it in your Vuex store
   }
   
   function changeLanguage() {
@@ -115,11 +114,13 @@
     background-color: #fff;
     padding: 20px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
   }
   
-  .logo h1 {
+  .logo h1 a {
     margin: 0;
     font-size: 2.5rem;
+    text-decoration: none;
     color: darkred;
   }
   
