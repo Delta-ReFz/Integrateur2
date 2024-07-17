@@ -3,6 +3,7 @@ import Accueil from './views/Accueil.vue';
 import Connexion from './views/Connexion.vue'; 
 import CreerEvenement from './views/CreerEvenement.vue';
 import GererEvenement from './views/GererEvenement.vue';
+import AnalyseDonnees from './views/AnalyseDonnees.vue';
 
 
 const routes = [
@@ -29,6 +30,12 @@ const routes = [
   path: '/gerer-evenements',
   name: 'GererEvenement',
   component: GererEvenement
+},
+
+{
+  path: '/analyse-donnees',
+  name: 'AnalyseDonnees',
+  component: AnalyseDonnees
 }
 ];
 
