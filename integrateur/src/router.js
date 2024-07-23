@@ -4,7 +4,7 @@ import Connexion from './views/Connexion.vue';
 import CreerEvenement from './views/CreerEvenement.vue';
 import GererEvenement from './views/GererEvenement.vue';
 import AnalyseDonnees from './views/AnalyseDonnees.vue';
-
+import PolitiqueConfidentialite from './components/PolitiqueConfidentialite.vue'; // Importation du nouveau composant
 
 const routes = [
   {
@@ -17,26 +17,31 @@ const routes = [
     path: '/connexion',
     name: 'Connexion',
     component: Connexion
- 
   },
 
-{
-  path: '/creer-evenement',
-  name: 'CreerEvenement',
-  component: CreerEvenement
-},
+  {
+    path: '/creer-evenement',
+    name: 'CreerEvenement',
+    component: CreerEvenement
+  },
 
-{
-  path: '/gerer-evenements',
-  name: 'GererEvenement',
-  component: GererEvenement
-},
+  {
+    path: '/gerer-evenements',
+    name: 'GererEvenement',
+    component: GererEvenement
+  },
 
-{
-  path: '/analyse-donnees',
-  name: 'AnalyseDonnees',
-  component: AnalyseDonnees
-}
+  {
+    path: '/analyse-donnees',
+    name: 'AnalyseDonnees',
+    component: AnalyseDonnees
+  },
+
+  {
+    path: '/politique-confidentialite',
+    name: 'PolitiqueConfidentialite',
+    component: PolitiqueConfidentialite
+  }
 ];
 
 const router = createRouter({
