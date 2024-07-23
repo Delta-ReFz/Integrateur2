@@ -21,5 +21,10 @@ export default {
   deleteUser(id) {
     return apiClient.delete(`/utilisateur/${id}`);
   },
-
+  authenticate(user) {
+    return apiClient.post('/auth', user);
+  },
+  createEvent(event) {
+    return apiClient.post('/evenement', event);
+  },
 };
