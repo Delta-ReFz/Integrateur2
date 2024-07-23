@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Accueil from './views/Accueil.vue';  
 import Connexion from './views/Connexion.vue'; 
 import CreerEvenement from './views/CreerEvenement.vue';
+import ModifierEvenement from './views/ModifierEvenement.vue';
 import GererEvenement from './views/GererEvenement.vue';
 import AnalyseDonnees from './views/AnalyseDonnees.vue';
 import PolitiqueConfidentialite from './views/PolitiqueConfidentialite.vue';
@@ -25,6 +26,12 @@ const routes = [
   path: '/creer-evenement',
   name: 'CreerEvenement',
   component: CreerEvenement
+},
+
+{
+  path: '/modifier-evenement',
+  name: 'ModifierEvenement',
+  component: ModifierEvenement
 },
 
 {

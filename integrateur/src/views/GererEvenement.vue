@@ -1,36 +1,16 @@
 <template>
     <div class="page-gerer-evenements">
-      <header class="header">
-        <div class="logo">
-          <h1><router-link to="/">EventLit</router-link></h1>
-        </div>
-        <nav class="navigation">
-          <ul>
-            <li><router-link to="/creer-evenement" class="nav-link">Créer Événement</router-link></li>
-            <li><router-link to="/gerer-evenements" class="nav-link active">Gérer Événements</router-link></li>
-            <li><router-link to="/analyse-donnees" class="nav-link">Analyse Données</router-link></li>
-            <li><router-link to="/connexion" class="nav-link">Connexion</router-link></li>
-          </ul>
-        </nav>
-        <div class="language-selector">
-          <label for="language">Langue: </label>
-          <select id="language" @change="changeLanguage">
-            <option value="en">English</option>
-            <option value="fr">Français</option>
-            <option value="es">Español</option>
-          </select>
-        </div>
-      </header>
+      <Navigation />
   
       <main class="main-content">
-        <div class="gerer-evenements">
+        <div class="gerer-evenements" v-if="isLogedIn">
           <h2>Gérer Vos Événements</h2>
           <div v-if="events.length" class="events-list">
             <div v-for="event in events" :key="event.id" class="event-item">
-              <h3>{{ event.name }}</h3>
-              <p><strong>Date:</strong> {{ event.date }}</p>
-              <p><strong>Lieu:</strong> {{ event.location }}</p>
-              <p><strong>Nombre de participants:</strong> {{ event.participants.length }}</p>
+              <h3>{{ event.nom }}</h3>
+              <p><strong>Date:</strong> {{ event.date_debut }}</p>
+              <p v-if="event.adresse !== null"><strong>Lieu:</strong> {{ event.adresse }}</p>
+              <p><strong>Nombre de participants:</strong> {{ event.nombre_inscription }}</p>
               <p><strong>Description:</strong> {{ event.description }}</p>
               <button @click="editEvent(event)" class="cta-button">Modifier</button>
               <button @click="deleteEvent(event.id)" class="cta-button delete">Supprimer</button>
@@ -40,58 +20,98 @@
             <p>Aucun événement trouvé. <router-link to="/creer-evenement" class="cta-button">Créez un événement</router-link></p>
           </div>
         </div>
+
+          <div v-else>
+            <LoginWarning />
+          </div>
       </main>
   
-      <footer class="footer">
-        <div class="footer-content">
-          <div class="footer-link">
-            <router-link to="/politique-confidentialite">Politique de Confidentialité</router-link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   </template>
   
   <script setup>
   import { ref } from 'vue';
+  import Navigation from '../components/Navigation.vue';
+  import Footer from '../components/Footer.vue';
+  import LoginWarning from '../components/LoginWarning.vue';
+  import { isLogedIn, idUtilisateur, token } from '../services/loginManager';
+  import { evenementAModifier, setEvenementAModifier } from '../services/modifierEvenementManager';
+  import { HOST } from '../services/sessionData';
+  import { useRouter } from 'vue-router';
   
-  const events = ref([
-    {
-      id: 1,
-      name: 'Conférence Tech',
-      date: '2024-09-15',
-      location: 'Paris, France',
-      description: 'Une conférence sur les nouvelles technologies.',
-      participants: ['Alice', 'Bob', 'Charlie']
-    },
-    {
-      id: 2,
-      name: 'Atelier de Cuisine',
-      date: '2024-10-01',
-      location: 'Lyon, France',
-      description: 'Un atelier pour apprendre les bases de la cuisine française.',
-      participants: ['David', 'Eva', 'Frank']
-    }
-  ]);
+  const router = useRouter();
   
-  function changeLanguage() {
-    const language = document.getElementById('language').value;
-    if (language === 'en') {
-      window.location.href = 'index.html';
-    } else if (language === 'fr') {
-      window.location.href = 'index_fr.html';
-    } else if (language === 'es') {
-      window.location.href = 'index_es.html';
-    }
+  const events = ref([]);
+
+  // Loader les événements de l'utilisateur connecté
+  if(isLogedIn.value){
+    getEvents();
   }
   
+
   function editEvent(event) {
-    console.log('Modifier l\'événement:', event);
-    // Add your edit logic here
+
+    // Stocker l'événement à modifier dans le ModifierEvenementManager.js
+    setEvenementAModifier(event);
+
+    // Rediriger l'utilisateur vers la page de modification de l'événement
+    router.push({ name: 'ModifierEvenement' });
   }
   
-  function deleteEvent(eventId) {
-    events.value = events.value.filter(event => event.id !== eventId);
+  async function deleteEvent(eventId) {
+    // Confirmer que l'utilisateur veut supprimer l'événement
+    if (!confirm('Voulez-vous vraiment supprimer cet événement?')) {
+      return;
+    }
+    // Supprimer l'événement de la base de données
+    try {
+      let response = await fetch(`${HOST}api/v1/evenements/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Eventlit',
+          'Authorization': 'Bearer ' + token.value
+        }
+      });
+
+      if (response.ok) {
+        alert('Événement supprimé avec succès');
+      } else {
+        alert('Erreur lors de la suppression de l\'événement');
+        console.error('Erreur lors de la récupération des événements:', response.statusText);
+      }
+    } catch (error) {
+      alert('Erreur lors de la suppression de l\'événement');
+      console.error('Erreur lors de la récupération des événements:', error);
+    }
+
+    // Recharger les événements
+    getEvents();
+  }
+
+  async function getEvents() {
+    // Obtenir les événements de l'utilisateur connecté sur l'API
+    try {
+      let response = await fetch(`${HOST}api/v1/evenements/organisateur/${idUtilisateur.value}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Eventlit',
+          'Authorization': 'Bearer ' + token.value
+        }
+      });
+
+      if (response.ok) {
+        let data = await response.json();
+        events.value = data;
+      } else {
+        alert('Erreur lors de la récupération des événements');
+        console.error('Erreur lors de la récupération des événements:', response.statusText);
+      }
+    } catch (error) {
+      alert('Erreur lors de la récupération des événements');
+      console.error('Erreur lors de la récupération des événements:', error);
+    }
   }
   </script>
   
@@ -102,54 +122,6 @@
     display: flex;
     flex-direction: column;
     background-color: #f9f9f9;
-  }
-  
-  .header {
-    background-color: #fff;
-    padding: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo h1 a {
-    margin: 0;
-    font-size: 2.5rem;
-    color: darkred;
-    text-decoration: none;
-  }
-  
-  .navigation {
-    margin-top: 10px;
-  }
-  
-  .navigation ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: #333;
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-link:hover {
-    color: darkred;
-  }
-  
-  .nav-link.active {
-    font-weight: bold;
-    color: darkred;
-  }
-  
-  .language-selector {
-    margin-top: 10px;
-  }
-  
-  .language-selector label {
-    margin-right: 10px;
   }
   
   .main-content {
@@ -217,28 +189,6 @@
   
   .cta-button:hover {
     background-color: #c82333;
-  }
-  
-  .footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-  }
-  
-  .footer-link {
-    text-decoration: none;
-    color: #fff;
-    padding: 10px 20px;
-    border: 2px solid #fff;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .footer-link:hover {
-    background-color: #e73c7e;
-    border-color: #e73c7e;
-    color: #fff;
   }
   
   @keyframes fadeIn {
