@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Accueil from './views/Accueil.vue';  
-import Connexion from './views/Connexion.vue'; 
+import Accueil from './views/Accueil.vue';
+import Connexion from './views/Connexion.vue';
 import CreerEvenement from './views/CreerEvenement.vue';
 import ModifierEvenement from './views/ModifierEvenement.vue';
 import GererEvenement from './views/GererEvenement.vue';
@@ -15,12 +15,11 @@ const routes = [
     name: 'Accueil',
     component: Accueil
   },
-  
+
   {
     path: '/connexion',
     name: 'Connexion',
     component: Connexion
- 
   },
 
 {
@@ -41,11 +40,11 @@ const routes = [
   component: AjouterEtiquettes
 },
 
-{
-  path: '/gerer-evenements',
-  name: 'GererEvenement',
-  component: GererEvenement
-},
+  {
+    path: '/gerer-evenements',
+    name: 'GererEvenement',
+    component: GererEvenement
+  },
 
 {
   path: '/analyse-donnees',
