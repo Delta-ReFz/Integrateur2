@@ -6,6 +6,7 @@ import ModifierEvenement from './views/ModifierEvenement.vue';
 import GererEvenement from './views/GererEvenement.vue';
 import AnalyseDonnees from './views/AnalyseDonnees.vue';
 import PolitiqueConfidentialite from './views/PolitiqueConfidentialite.vue';
+import AjouterEtiquettes from './views/AjouterEtiquettes.vue';
 
 
 const routes = [
@@ -32,6 +33,12 @@ const routes = [
   path: '/modifier-evenement',
   name: 'ModifierEvenement',
   component: ModifierEvenement
+},
+
+{
+  path: '/ajouter-etiquettes',
+  name: 'AjouterEtiquettes',
+  component: AjouterEtiquettes
 },
 
 {

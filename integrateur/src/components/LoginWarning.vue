@@ -1,5 +1,5 @@
 <template>
-    <h3>Vous devez être connecté pour pouvoir créer un événement</h3>
+    <h3>Vous devez être connecté pour pouvoir accéder à cette fonctionnalité</h3>
     <router-link to="/connexion" class="cta-button">Je me connecte</router-link>
 </template>
 
@@ -15,15 +15,15 @@
 }
 
 .cta-button {
-  display: inline-block;
-  padding: 15px 40px;
-  font-size: 1.2rem;
-  text-decoration: none;
-  color: #fff;
-  background-color: darkred;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
+    display: inline-block;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #fff;
+    background-color: darkred;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 h3 {

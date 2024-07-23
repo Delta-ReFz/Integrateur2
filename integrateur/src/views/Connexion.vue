@@ -51,10 +51,10 @@
       </div>
     </main>
 
-      <main class="main-content" v-else>
-        <h2>Vous êtes déjà connecté en tant que :</h2>
-        <p>{{ loginManager.prenomUtilisateur }} {{ loginManager.nomUtilisateur }}</p>
-      </main>
+    <main class="main-content" v-else>
+      <h2>Vous êtes déjà connecté en tant que :</h2>
+      <p>{{ loginManager.prenomUtilisateur }} {{ loginManager.nomUtilisateur }}</p>
+    </main>
 
     <Footer />
   </div>
@@ -207,7 +207,8 @@ function saveResponseDate(data) {
   color: #fff;
 }
 
-.login-section, .signup-section {
+.login-section,
+.signup-section {
   width: 100%;
   max-width: 400px;
   padding: 30px;
@@ -218,7 +219,8 @@ function saveResponseDate(data) {
   margin-bottom: 2rem;
 }
 
-.login-section h2, .signup-section h2 {
+.login-section h2,
+.signup-section h2 {
   font-size: 2.5rem;
   color: #333;
   margin-bottom: 20px;
@@ -244,7 +246,8 @@ function saveResponseDate(data) {
   border-radius: 4px;
 }
 
-.login-button, .signup-button {
+.login-button,
+.signup-button {
   display: inline-block;
   padding: 10px 20px;
   font-size: 1.2rem;
@@ -255,7 +258,8 @@ function saveResponseDate(data) {
   transition: background-color 0.3s ease;
 }
 
-.login-button:hover, .signup-button:hover {
+.login-button:hover,
+.signup-button:hover {
   background-color: #e73c7e;
 }
 </style>
