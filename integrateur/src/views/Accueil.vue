@@ -42,7 +42,7 @@
       </footer>
     </div>
   </template>
-  <div>radia</div>
+ 
   <script setup>
   import { ref } from 'vue';
   
