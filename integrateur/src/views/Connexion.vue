@@ -36,6 +36,25 @@
             </div>
             <button type="submit" class="login-button">Se connecter</button>
           </form>
+          <!-- Inscription Section -->
+      <div class="signup-section">
+        <h2>Inscription</h2>
+        <form @submit.prevent="submitSignup">
+          <div class="form-group">
+            <label for="signup-email">Email:</label>
+            <input type="email" id="signup-email" v-model="signupEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Mot de passe:</label>
+            <input type="password" id="signup-password" v-model="signupPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirmer Mot de passe:</label>
+            <input type="password" id="confirm-password" v-model="confirmPassword" required />
+          </div>
+          <button type="submit" class="signup-button">S'inscrire</button>
+        </form>
+      </div>
         </div>
       </main>
   
@@ -54,6 +73,18 @@
   
   const email = ref('');
   const password = ref('');
+  const signupEmail = ref('');
+const signupPassword = ref('');
+const confirmPassword = ref('');
+
+function submitSignup() {
+  if (signupPassword.value !== confirmPassword.value) {
+    alert("Les mots de passe ne correspondent pas.");
+    return;
+  }
+  console.log('Email:', signupEmail.value);
+  console.log('Mot de passe:', signupPassword.value);
+}
   
   function submitLogin() {
     console.log('Email:', email.value);
@@ -210,5 +241,36 @@
     border-color: #e73c7e;
     color: #fff;
   }
+
+  .signup-section {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.signup-section h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.signup-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #fff;
+  background-color: darkred;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #e73c7e;
+}
   </style>
   
