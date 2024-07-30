@@ -73,6 +73,8 @@
   
   <script setup>
   import { ref } from 'vue';
+  import eventBus from '../scripts/eventBus.js';
+
   
   const event = ref({
     name: '',
@@ -85,9 +87,32 @@
     adresse: ''
   });
   
-  function submitForm() {
-    console.log('Événement créé:', event.value);
+  async function submitForm() {
+  try {
+    const response = await fetch('https://50cf-144-172-214-11.ngrok-free.app/api/v1/evenements', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + eventBus.getLoginToken(),
+        'User-Agent': 'Eventlit'
+      },
+      body: JSON.stringify(event.value)
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Événement créé avec succès:', data);
+      alert('Événement créé avec succès');
+    } else {
+      const errorData = await response.json();
+      console.error('Erreur lors de la création de l\'événement:', errorData);
+      alert('Erreur lors de la création de l\'événement - ' + errorData.message);
+    }
+  } catch (error) {
+    console.error('Erreur de connexion:', error);
+    alert('Erreur de connexion');
   }
+}
   
   function changeLanguage() {
     const language = document.getElementById('language').value;
@@ -99,6 +124,40 @@
       window.location.href = 'index_es.html';
     }
   }
+
+  const getEvenement = async () => {
+  if (eventBus.getLoginToken() === null) {
+    alert('Vous devez vous connecter pour voir les événements');
+    return;
+  }
+
+  console.log('Récupération des événements');
+  const response = await fetch('https://50cf-144-172-214-11.ngrok-free.app/api/v1/evenements', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + eventBus.getLoginToken(),
+      'User-Agent': 'Eventlit'
+    }
+  });
+
+  const data = await response.json();
+
+  if (response.ok) {
+    console.log('Événements récupérés');
+    console.log(data);
+
+    let conteneur = document.querySelector('.conteneur');
+    data.forEach(evenement => {
+      let evenementDiv = document.createElement('div');
+      evenementDiv.innerHTML = evenement.nom;
+      conteneur.appendChild(evenementDiv);
+    });
+  } else {
+    alert('Les événements n\'ont pas été récupérés');
+  }
+  };
+
   </script>
   
   <style scoped>

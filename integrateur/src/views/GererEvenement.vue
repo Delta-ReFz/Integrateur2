@@ -53,26 +53,53 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
+  import eventBus from '../scripts/eventBus';
   
-  const events = ref([
-    {
-      id: 1,
-      name: 'Conférence Tech',
-      date: '2024-09-15',
-      location: 'Paris, France',
-      description: 'Une conférence sur les nouvelles technologies.',
-      participants: ['Alice', 'Bob', 'Charlie']
-    },
-    {
-      id: 2,
-      name: 'Atelier de Cuisine',
-      date: '2024-10-01',
-      location: 'Lyon, France',
-      description: 'Un atelier pour apprendre les bases de la cuisine française.',
-      participants: ['David', 'Eva', 'Frank']
+  const events = ref([]);
+
+  async function fetchEvents() {
+  try {
+    const response = await fetch('https://50cf-144-172-214-11.ngrok-free.app/api/v1/evenements', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + eventBus.getLoginToken(),
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      events.value = data;
+    } else {
+      console.error('Failed to fetch events');
     }
-  ]);
+  } catch (error) {
+    console.error('Error fetching events:', error);
+  }
+  
+  }
+
+async function deleteEvent(eventId) {
+  try {
+    const response = await fetch('https://50cf-144-172-214-11.ngrok-free.app/api/v1/evenements', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + eventBus.getLoginToken(),
+      }
+    });
+    if (response.ok) {
+      events.value = events.value.filter(event => event.id !== eventId);
+      console.log('Événement supprimé avec succès');
+    } else {
+      console.error('Failed to delete event');
+    }
+  } catch (error) {
+    console.error('Error deleting event:', error);
+  }
+}
+
+onMounted(fetchEvents);
   
   function changeLanguage() {
     const language = document.getElementById('language').value;
@@ -87,12 +114,9 @@
   
   function editEvent(event) {
     console.log('Modifier l\'événement:', event);
-    // Add your edit logic here
+    
   }
   
-  function deleteEvent(eventId) {
-    events.value = events.value.filter(event => event.id !== eventId);
-  }
   </script>
   
   <style scoped>

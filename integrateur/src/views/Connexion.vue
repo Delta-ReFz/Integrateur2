@@ -75,8 +75,10 @@
 
 <script setup>
 import { ref } from 'vue';
+import eventBus from '../scripts/eventBus.js';
 
-const showLogin = ref(true); // Toggle between login and signup
+
+const showLogin = ref(true); 
 const email = ref('');
 const password = ref('');
 const signupEmail = ref('');

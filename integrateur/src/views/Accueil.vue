@@ -46,6 +46,7 @@
   <script setup>
   
   import { ref } from 'vue';
+  import eventBus from '../scripts/eventBus.js';
   
   
   function changeLanguage() {
