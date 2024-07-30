@@ -4,6 +4,7 @@ import Connexion from './views/Connexion.vue';
 import CreerEvenement from './views/CreerEvenement.vue';
 import GererEvenement from './views/GererEvenement.vue';
 import AnalyseDonnees from './views/AnalyseDonnees.vue';
+import PolitiqueConfidentialite from './views/PolitiqueConfidentialite.vue';
 
 
 const routes = [
@@ -36,7 +37,14 @@ const routes = [
   path: '/analyse-donnees',
   name: 'AnalyseDonnees',
   component: AnalyseDonnees
+},
+
+{
+  path: '/politique-confidentialite' ,
+  name: 'PolitiqueConfidentialite' ,
+  component: PolitiqueConfidentialite
 }
+
 ];
 
 const router = createRouter({
