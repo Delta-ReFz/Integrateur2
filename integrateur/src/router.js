@@ -22,23 +22,23 @@ const routes = [
     component: Connexion
   },
 
-{
-  path: '/creer-evenement',
-  name: 'CreerEvenement',
-  component: CreerEvenement
-},
+  {
+    path: '/creer-evenement',
+    name: 'CreerEvenement',
+    component: CreerEvenement
+  },
 
-{
-  path: '/modifier-evenement',
-  name: 'ModifierEvenement',
-  component: ModifierEvenement
-},
+  {
+    path: '/modifier-evenement',
+    name: 'ModifierEvenement',
+    component: ModifierEvenement
+  },
 
-{
-  path: '/ajouter-etiquettes',
-  name: 'AjouterEtiquettes',
-  component: AjouterEtiquettes
-},
+  {
+    path: '/ajouter-etiquettes',
+    name: 'AjouterEtiquettes',
+    component: AjouterEtiquettes
+  },
 
   {
     path: '/gerer-evenements',
@@ -46,17 +46,17 @@ const routes = [
     component: GererEvenement
   },
 
-{
-  path: '/analyse-donnees',
-  name: 'AnalyseDonnees',
-  component: AnalyseDonnees
-},
+  {
+    path: '/analyse-donnees',
+    name: 'AnalyseDonnees',
+    component: AnalyseDonnees
+  },
 
-{
-  path: '/politique-confidentialite' ,
-  name: 'PolitiqueConfidentialite' ,
-  component: PolitiqueConfidentialite
-}
+  {
+    path: '/politique-confidentialite',
+    name: 'PolitiqueConfidentialite',
+    component: PolitiqueConfidentialite
+  }
 
 ];
 
