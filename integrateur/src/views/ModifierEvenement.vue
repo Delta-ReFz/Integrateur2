@@ -1,10 +1,10 @@
 <template>
-  <div class="page-creer-evenement">
+  <div class="page-modifier-evenement">
     <Navigation />
 
     <main class="main-content">
       <div class="creer-evenement" v-if="isLogedIn">
-        <h2>Créer un Nouvel Événement</h2>
+        <h2>Modifier un Événement</h2>
         <form @submit.prevent="submitForm">
           <div class="form-group">
             <label for="nom">Nom de l'événement :</label>
@@ -36,7 +36,7 @@
             <input type="number" id="participants" v-model="event.nombre_participants_maximum" />
           </div>
 
-          <button type="submit" class="cta-button">Créer</button>
+          <button type="submit" class="cta-button">Enregistrer</button>
         </form>
       </div>
 
@@ -58,23 +58,26 @@ import { isLogedIn, token, idUtilisateur } from '../services/loginManager';
 import LoginWarning from '../components/LoginWarning.vue';
 import { HOST } from '../services/sessionData';
 import { useRouter } from 'vue-router';
+import { evenementAModifier } from '../services/modifierEvenementManager';
 
 const router = useRouter();
 
+console.log(evenementAModifier);
+
 const event = ref({
-  nom: '',
-  date_debut: '',
-  description: '',
-  image_principale: '',
-  nombre_participants_maximum: '',
-  date_limite_inscription: '',
-  adresse: ''
+  nom: evenementAModifier.nom,
+  date_debut: evenementAModifier.date_debut,
+  description: evenementAModifier.description,
+  image_principale: evenementAModifier.image_principale,
+  nombre_participants_maximum: evenementAModifier.nombre_participants_maximum,
+  date_limite_inscription: evenementAModifier.date_limite_inscription,
+  adresse: evenementAModifier.adresse
 });
 
 async function submitForm() {
   // Trim les valeurs vides de event
   for (const key in event.value) {
-    if (event.value[key] === '') {
+    if (event.value[key] === '' || event.value[key] === null) {
       delete event.value[key];
     }
   }
@@ -85,8 +88,8 @@ async function submitForm() {
   // Envoyer les données à l'API
 
   try {
-    let response = await fetch(`${HOST}api/v1/evenements`, {
-      method: 'POST',
+    let response = await fetch(`${HOST}api/v1/evenements/${evenementAModifier.id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'Eventlit',
@@ -98,17 +101,17 @@ async function submitForm() {
     if (response.ok) {
       // let data = await response.json(); // Nous ne nous servons pas des données, donc pas besoin de les récupérer
 
-      alert('Événement créé avec succès');
+      alert('Événement modifié avec succès');
 
       // Rediriger vers la page gérer vos Événements
       router.push({ name: 'GererEvenement' });
 
     } else {
-      alert('Erreur lors de la création de l événement');
+      alert('Erreur lors de la modification de l événement');
     }
   } catch (error) {
-    alert('Erreur lors de la création de l événement');
-    console.error('Erreur lors de la création de l événement', error);
+    alert('Erreur lors de la modification de l événement');
+    console.error('Erreur lors de la modification de l événement', error);
   }
 
 }
@@ -116,7 +119,7 @@ async function submitForm() {
 </script>
 
 <style scoped>
-.page-creer-evenement {
+.page-modifier-evenement {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
   display: flex;
