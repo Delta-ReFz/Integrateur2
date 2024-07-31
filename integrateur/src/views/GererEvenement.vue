@@ -12,6 +12,7 @@
             <p v-if="event.adresse !== null"><strong>Lieu:</strong> {{ event.adresse }}</p>
             <p><strong>Nombre de participants:</strong> {{ event.nombre_inscription }}</p>
             <p><strong>Description:</strong> {{ event.description }}</p>
+            <p v-if="event.etiquettes && event.etiquettes.length"><strong>Étiquettes:</strong> {{ event.etiquettes.map(etiquette => etiquette.nom_etiquette).join(', ') }}</p>
             <button @click="ajouterEtiquettes(event)" class="cta-button">Ajouter des étiquettes</button>
             <button @click="editEvent(event)" class="cta-button">Modifier</button>
             <button @click="deleteEvent(event.id)" class="cta-button delete">Supprimer</button>
@@ -121,6 +122,31 @@ async function getEvents() {
   } catch (error) {
     alert('Erreur lors de la récupération des événements');
     console.error('Erreur lors de la récupération des événements:', error);
+  }
+
+  // Get les etiquettes liées à chaque événement
+
+  for (let event of events.value) {
+    try {
+      let response = await fetch(`${HOST}api/v1/etiquettes/${event.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Eventlit',
+          'Authorization': 'Bearer ' + token.value
+        }
+      });
+
+      if (response.ok) {
+        let data = await response.json();
+        event.etiquettes = data;
+      } else {
+        alert('Erreur lors de la récupération des étiquettes');
+        console.error('Erreur lors de la récupération des étiquettes:');
+      }
+    } catch (error) {
+      alert('Erreur lors de la récupération des étiquettes');
+      console.error('Erreur lors de la récupération des étiquettes:', error);
+    }
   }
 }
 </script>
