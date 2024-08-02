@@ -37,14 +37,14 @@
 }
 
 .navigation {
-  /* margin-top: 10px; */
+  grid-column: span 2;
 }
 
 .navigation ul {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: left;
   gap: 20px;
   padding: 0;
   align-self: center;
