@@ -7,6 +7,7 @@ import GererEvenement from './views/GererEvenement.vue';
 import AnalyseDonnees from './views/AnalyseDonnees.vue';
 import PolitiqueConfidentialite from './views/PolitiqueConfidentialite.vue';
 import AjouterEtiquettes from './views/AjouterEtiquettes.vue';
+import MessagesFeedback from './views/MessagesFeedback.vue';
 
 
 const routes = [
@@ -50,6 +51,12 @@ const routes = [
     path: '/analyse-donnees',
     name: 'AnalyseDonnees',
     component: AnalyseDonnees
+  },
+
+  {
+    path: '/messages-feedback',
+    name: 'MessagesFeedback',
+    component: MessagesFeedback
   },
 
   {

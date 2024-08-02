@@ -12,7 +12,8 @@
             <p v-if="event.adresse !== null"><strong>Lieu:</strong> {{ event.adresse }}</p>
             <p><strong>Nombre de participants:</strong> {{ event.nombre_inscription }}</p>
             <p><strong>Description:</strong> {{ event.description }}</p>
-            <p v-if="event.etiquettes && event.etiquettes.length"><strong>Étiquettes:</strong> {{ event.etiquettes.map(etiquette => etiquette.nom_etiquette).join(', ') }}</p>
+            <p v-if="event.etiquettes && event.etiquettes.length"><strong>Étiquettes:</strong> {{
+              event.etiquettes.map(etiquette => etiquette.nom_etiquette).join(', ') }}</p>
             <button @click="ajouterEtiquettes(event)" class="cta-button">Ajouter des étiquettes</button>
             <button @click="editEvent(event)" class="cta-button">Modifier</button>
             <button @click="deleteEvent(event.id)" class="cta-button delete">Supprimer</button>

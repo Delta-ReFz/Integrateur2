@@ -11,6 +11,7 @@
             <button @click="toggleEventDetails(event.id)" class="cta-button">
               {{ event.showDetails ? 'Masquer Détails' : 'Voir Détails' }}
             </button>
+            <button @click="voirFeedback(event)" class="cta-button">Voir le feedback</button>
             <div v-if="event.showDetails" class="event-details">
               <p><strong>Date:</strong> {{ event.date_debut }}</p>
               <p v-if="event.adresse !== null"><strong>Lieu:</strong> {{ event.adresse }}</p>
@@ -48,6 +49,8 @@ import Footer from '../components/Footer.vue';
 import { isLogedIn, idUtilisateur, token } from '../services/loginManager';
 import LoginWarning from '../components/LoginWarning.vue';
 import { HOST } from '../services/sessionData';
+import { useRouter } from 'vue-router';
+import { setEvenementAModifier } from '../services/modifierEvenementManager';
 
 if (isLogedIn.value) {
   getEvents();
@@ -55,12 +58,21 @@ if (isLogedIn.value) {
 
 const events = ref([]);
 
+const router = useRouter();
 
 function toggleEventDetails(eventId) {
   const event = events.value.find(e => e.id === eventId);
   if (event) {
     event.showDetails = !event.showDetails;
   }
+}
+
+function voirFeedback(event) {
+  // Stocker l'événement à modifier dans le ModifierEvenementManager.js
+  setEvenementAModifier(event);
+
+  // Envoyer vers la page de feedback
+  router.push({ name: 'MessagesFeedback' });
 }
 
 async function getEvents() {
