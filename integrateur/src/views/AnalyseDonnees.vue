@@ -12,6 +12,7 @@
               {{ event.showDetails ? 'Masquer Détails' : 'Voir Détails' }}
             </button>
             <button @click="voirFeedback(event)" class="cta-button">Voir le feedback</button>
+            <button v-if="event.nombre_inscription > 0" @click="copierCourriels(event)" class="cta-button">Copier les courriels des participants</button>
             <div v-if="event.showDetails" class="event-details">
               <p><strong>Date:</strong> {{ event.date_debut }}</p>
               <p v-if="event.adresse !== null"><strong>Lieu:</strong> {{ event.adresse }}</p>
@@ -97,6 +98,47 @@ async function getEvents() {
     alert('Erreur lors de la récupération des événements');
     console.error('Erreur lors de la récupération des événements:', error);
   }
+}
+
+async function copierCourriels(event) {
+  let courriels = ref([]);
+
+  // Obtenir les courriels des participants de l'événement depuis l'API
+  try {
+    let response = await fetch(`${HOST}api/v1/inscriptions/courriels/${event.id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Eventlit',
+        'Authorization': 'Bearer ' + token.value
+      }
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+      courriels.value = data;
+    } else {
+      alert('Erreur lors de la récupération des courriels');
+      console.error('Erreur lors de la récupération des courriels:', response.statusText);
+    }
+  } catch (error) {
+    alert('Erreur lors de la récupération des courriels');
+    console.error('Erreur lors de la récupération des courriels:', error);
+  }
+
+  // Copier les courriels dans le presse-papiers
+  if (courriels.value.length > 0) {
+    let courrielsString = '';
+
+    courriels.value.forEach(courriel => {
+      courrielsString += `${courriel}\n`;
+    });
+  
+    navigator.clipboard.writeText(courrielsString);
+    alert('Courriels copiés dans le presse-papiers');
+  } else {
+    alert('Aucun courriel trouvé');
+  }
+
 }
 </script>
 
