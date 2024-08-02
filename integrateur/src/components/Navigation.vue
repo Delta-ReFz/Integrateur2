@@ -20,10 +20,14 @@
 <style scoped>
 .header {
   background-color: #fff;
-  padding: 20px 0;
+  padding: 20px 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-decoration: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
 }
+
 
 .logo h1 a {
   margin: 0;
@@ -33,7 +37,7 @@
 }
 
 .navigation {
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .navigation ul {
@@ -42,6 +46,8 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  padding: 0;
+  align-self: center;
 }
 
 .nav-link {
